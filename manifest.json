@@ -1,0 +1,14 @@
+{
+	"name": "My First Extension",
+	"version" : "1.0",
+	"description" : "The first extension I made",
+	"background_page" : "background.html",
+	"content_scripts" : [ 
+		{
+		"matches" : ["http://deepleap.org/"],
+		"run_at" : "document_end",
+		"js" : ["contentScript.js"]
+		}
+	],
+	"permissions" : ["http://www.anagramssolved.com/*"]
+}

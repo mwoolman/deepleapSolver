@@ -1,0 +1,36 @@
+<html>
+<head>
+<script>
+var currLetters = '';
+chrome.extension.onRequest.addListener(
+	function( request, sender, sendResponse ){
+		var letters = request.letters;
+		if( currLetters != letters){
+			getWord(letters, sendResponse );
+		}
+		currLetters = letters;
+	}	
+);
+
+var cut = /(id="results".*<\/div>)/;
+
+function getWord(letters, sendResponse){
+	var xhr = new XMLHttpRequest();
+	xhr.onreadystatechange = function(){
+		if(xhr.readyState == 4){
+			var resp = xhr.responseText;
+			var words = resp.match(/Letter Words.*/);
+			words = words.toString().split("<li>");
+			var word = words[words.length-1];
+			word = word.match(/ \w+/).toString().substr(1);
+			sendResponse({word:word});
+		}
+	}
+	xhr.open("GET", "http://www.anagramssolved.com/anagram-solutions.html?letters="+ letters ,false);
+	xhr.send();
+}
+
+</script>
+</head>
+
+</html>
