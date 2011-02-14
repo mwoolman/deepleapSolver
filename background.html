@@ -38,6 +38,8 @@ chrome.extension.onRequest.addListener(
 		var letters = request.letters;
 		if( currLetters != letters){
 			getWord(letters, sendResponse );
+		}else{
+		    sendResponse({word:"Words"});
 		}
 		currLetters = letters;
 	}	
@@ -66,9 +68,6 @@ function getWord(letters, sendResponse){
 			    for( var i = 0; i < words[idx].length; i++ ){
 				total += lvals[words[idx].charAt(i)];
 			    }
-			    if( words[idx].length == currLetters.length ){
-				total *= 2;
-			    }
 			    if( total > largest ){
 				largest = total;
 				word = words[idx];
@@ -77,7 +76,7 @@ function getWord(letters, sendResponse){
 			}
 		    }
 		}
-		sendResponse({word:word});
+		sendResponse({word:word, value: largest});
 	    }
 	}
 	xhr.open("GET", "http://www.anagramssolved.com/anagram-solutions.html?letters="+ letters ,false);
